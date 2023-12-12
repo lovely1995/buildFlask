@@ -1,0 +1,30 @@
+新增CGI
+1.控制台->啟用或是關閉win服務->依序點點點->WEB服務氣->應用程式->安裝CGI
+
+1.pip install wfastcgi
+CMD-> wfastcgi-enable
+會顯示路徑
+已將設定變更套用至設定認可路徑 “MACHINE/WEBROOT/APPHOST” 中 “MACHINE/WEBROOT/APPHOST” 的區段 “system.webServer/fastCgi”。
+“c:\users\...\appdata\local\continuum\anaconda3\python.exe|c:\users\...\appdata\local\continuum\anaconda3\lib\site-packages\wfastcgi.py” is no longer registered for use with FastCGI
+如果重複使用
+會跳錯 可以先還原
+wfastcgi-disable 
+2.記錄下路徑
+
+3.IIS新增站台(TEST).把python的資料夾納入
+如果站台有多個網站 port不可以重複
+可以設定81.82.83等 
+防火牆要新增
+輸入規則->新增->連接阜->81->儲存
+4.於TEST站台的處理常式規定->新增對應
+5.要求對應=*  ,  模組=FastCgiModule , 執行檔 = 步驟1的路徑 無雙引號 , 名稱隨意
+要求限制->只有當要求對應不要打勾
+6.點總站台->FastCGI設定->選你剛剛新增的路徑->環境變數->
+a.左欄加入:PYTHONPATH。
+右欄屬性: Name，寫PYTHONPATH。Value，寫你的入口程式資料夾位置。
+b.左欄加入:WSGI_HANDLER。
+右欄屬性: Name，寫WSGI_HANDLER。Value，寫你的入口程式檔名，後面自己加.app。
+7.
+a.點選應用程式集區>點剛剛創的FastCGI的新設定>點進階設定。
+b.產生處理序模型事件紀錄項目>識別>改成LocalSyetem
+8. 127.0.0.1:port;  port =你設定的port
